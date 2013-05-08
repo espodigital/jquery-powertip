@@ -137,9 +137,29 @@ function TooltipController(options) {
 		} else {
 			positionTipOnCursor();
 		}
-
+		
 		// fadein
-		tipElement.fadeIn(options.fadeInTime, function fadeInCallback() {
+		/*tipElement.fadeIn(options.fadeInTime, function fadeInCallback() {
+			
+			
+		});*/
+		
+		tipElement.css('display', 'block');
+		tipElement.css({
+			'-ms-filter': 'progid:DXImageTransform.Microsoft.Alpha(Opacity=0)',
+			'-khtml-opacity': '0',
+			'-moz-opacity': '0',
+			'opacity': '0'
+		});
+		
+		// Bouncy
+		tipElement.animate({
+			'margin-bottom': '0px',
+			'-ms-filter': 'progid:DXImageTransform.Microsoft.Alpha(Opacity=100)',
+			'-khtml-opacity': '1',
+			'-moz-opacity': '1',
+			'opacity': '1'
+		}, 200, 'easeOutSine', function(){
 			// start desync polling
 			if (!session.desyncTimeout) {
 				session.desyncTimeout = setInterval(closeDesyncedTip, 500);
@@ -167,9 +187,15 @@ function TooltipController(options) {
 		// reset element state
 		element.data(DATA_HASACTIVEHOVER, false);
 		element.data(DATA_FORCEDOPEN, false);
-
-		// fade out
-		tipElement.fadeOut(options.fadeOutTime, function fadeOutCallback() {
+		
+		// Bouncy
+		tipElement.animate({
+			'margin-bottom': '-5px',
+			'-ms-filter': 'progid:DXImageTransform.Microsoft.Alpha(Opacity=0)',
+			'-khtml-opacity': '0',
+			'-moz-opacity': '0',
+			'opacity': '0'
+		}, 200, 'easeOutSine', function(){
 			var coords = new CSSCoordinates();
 
 			// reset session and tooltip element
@@ -186,6 +212,12 @@ function TooltipController(options) {
 			// trigger powerTipClose event
 			element.trigger('powerTipClose');
 		});
+		
+		// fade out
+		/*tipElement.fadeOut(options.fadeOutTime, function fadeOutCallback() {
+			
+		});*/
+		
 	}
 
 	/**
